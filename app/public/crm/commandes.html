@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contoso Protect · CRM · Commandes</title>
+  <link rel="stylesheet" href="/commun/style.css">
+</head>
+<body>
+  <header class="bandeau crm">
+    <span class="marque">Contoso Protect · CRM</span>
+    <div class="utilisateur">
+      <span id="utilisateur" data-testid="utilisateur"></span>
+      <button id="deconnexion" type="button">Se déconnecter</button>
+    </div>
+  </header>
+  <main>
+    <h1>Commandes</h1>
+    <form class="filtres" role="search" aria-label="Filtrer les commandes" id="filtres">
+      <div class="champ">
+        <label for="recherche">Rechercher</label>
+        <input id="recherche" type="search" placeholder="Nom, ville ou n° de commande">
+      </div>
+      <div class="champ">
+        <label for="filtre-statut">Statut</label>
+        <select id="filtre-statut">
+          <option value="">Tous les statuts</option>
+        </select>
+      </div>
+    </form>
+    <table aria-labelledby="titre-tableau">
+      <caption id="titre-tableau" class="visuellement-cache">Liste des commandes</caption>
+      <thead>
+        <tr>
+          <th scope="col">N° de commande</th>
+          <th scope="col">Client</th>
+          <th scope="col">Ville</th>
+          <th scope="col">Offre</th>
+          <th scope="col">Total mensuel</th>
+          <th scope="col">Statut</th>
+          <th scope="col">Reçue le</th>
+        </tr>
+      </thead>
+      <tbody id="lignes"></tbody>
+    </table>
+    <p id="aucune" hidden>Aucune commande ne correspond à votre recherche.</p>
+  </main>
+  <footer>Contoso Protect est une entreprise fictive créée pour une démonstration. Toutes les données sont synthétiques.</footer>
+  <script type="module" src="/crm/commandes.mjs"></script>
+</body>
+</html>

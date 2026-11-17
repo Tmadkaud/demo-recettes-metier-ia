@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contoso Protect · Commande enregistrée</title>
+  <link rel="stylesheet" href="/commun/style.css">
+</head>
+<body>
+  <header class="bandeau">
+    <a class="marque" href="/">Contoso Protect</a>
+    <nav aria-label="Navigation principale">
+      <a href="/">Nos offres</a>
+      <a href="/crm">Espace conseiller</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Merci, votre commande est enregistrée</h1>
+    <section class="carte">
+      <p>Numéro de commande : <strong id="numero-commande" data-testid="numero-commande"></strong></p>
+      <dl class="fiche" id="recapitulatif" hidden>
+        <dt>Offre</dt><dd id="recap-offre"></dd>
+        <dt>Options</dt><dd id="recap-options"></dd>
+        <dt>Total mensuel</dt><dd id="recap-total"></dd>
+        <dt>Frais d'installation</dt><dd id="recap-frais"></dd>
+        <dt>Date d'installation souhaitée</dt><dd id="recap-date"></dd>
+      </dl>
+      <p>Un conseiller Contoso Protect va vérifier votre commande puis vous contacter pour confirmer le rendez-vous d'installation.</p>
+      <a class="bouton" href="/">Retour à l'accueil</a>
+    </section>
+  </main>
+  <footer>Contoso Protect est une entreprise fictive créée pour une démonstration. Toutes les données sont synthétiques.</footer>
+  <script type="module" src="/site/confirmation.mjs"></script>
+</body>
+</html>

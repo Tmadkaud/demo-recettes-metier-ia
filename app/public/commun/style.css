@@ -1,0 +1,93 @@
+:root {
+  --bleu: #0b3d6e;
+  --bleu-clair: #e8f1fa;
+  --accent: #e5732b;
+  --vert: #1f7a4d;
+  --rouge: #b42318;
+  --gris: #5b6472;
+  --bordure: #d5dbe3;
+  --fond: #f6f8fb;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #1c2430;
+  background: var(--fond);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+main { width: min(1080px, 100% - 2rem); margin: 1.5rem auto 3rem; flex: 1; }
+main.etroit { width: min(440px, 100% - 2rem); }
+h1 { color: var(--bleu); margin: 0.5rem 0 1rem; }
+h2 { color: var(--bleu); font-size: 1.15rem; margin: 0 0 0.75rem; }
+a { color: var(--bleu); }
+
+.bandeau { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 1.5rem; background: var(--bleu); color: #fff; }
+.bandeau a, .bandeau .marque { color: #fff; text-decoration: none; }
+.bandeau .marque { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.02em; }
+.bandeau .marque::before { content: "◆ "; color: var(--accent); }
+.bandeau nav { display: flex; gap: 1.25rem; }
+.bandeau.crm { background: #1c2430; }
+.utilisateur { display: flex; align-items: center; gap: 1rem; }
+
+footer { padding: 1rem 1.5rem; color: var(--gris); font-size: 0.85rem; text-align: center; border-top: 1px solid var(--bordure); background: #fff; }
+
+.accroche { background: linear-gradient(120deg, var(--bleu), #1a5c9e); color: #fff; border-radius: 14px; padding: 2rem; margin-bottom: 2rem; }
+.accroche h1 { color: #fff; margin-top: 0; }
+
+.offres { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.offre, .carte { background: #fff; border: 1px solid var(--bordure); border-radius: 12px; padding: 1.25rem; }
+.offre { display: flex; flex-direction: column; gap: 0.5rem; }
+.offre h3 { margin: 0; color: var(--bleu); }
+.prix { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.offre .bouton { margin-top: auto; }
+
+.bouton, button { display: inline-block; border: 0; border-radius: 8px; padding: 0.65rem 1.1rem; font: inherit; font-weight: 600; cursor: pointer; background: var(--accent); color: #fff; text-decoration: none; text-align: center; }
+button.secondaire { background: #fff; color: var(--bleu); border: 1px solid var(--bleu); }
+button.danger { background: var(--rouge); }
+button:disabled { background: #c9ced6; color: #59616d; cursor: not-allowed; }
+.bandeau button { background: transparent; border: 1px solid #fff; color: #fff; padding: 0.35rem 0.8rem; }
+
+form .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem 1rem; }
+fieldset { border: 1px solid var(--bordure); border-radius: 12px; background: #fff; padding: 1rem 1.25rem; margin: 0 0 1rem; }
+legend { font-weight: 700; color: var(--bleu); padding: 0 0.35rem; }
+label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+label.choix { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; margin: 0.35rem 0; }
+input:not([type="checkbox"]):not([type="radio"]), select, textarea { width: 100%; padding: 0.55rem 0.65rem; border: 1px solid #aab4c2; border-radius: 8px; font: inherit; background: #fff; }
+input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--rouge); outline-color: var(--rouge); }
+.champ { display: flex; flex-direction: column; }
+.erreur { color: var(--rouge); font-size: 0.9rem; margin: 0.25rem 0 0; }
+.alerte { border: 1px solid var(--rouge); background: #fdecea; color: var(--rouge); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-weight: 600; }
+.info { border: 1px solid var(--vert); background: #e9f6ef; color: var(--vert); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-weight: 600; }
+.avertissement { color: #8a4b00; background: #fff4e5; border-radius: 8px; padding: 0.5rem 0.75rem; }
+
+.souscription { display: grid; grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); gap: 1.25rem; align-items: start; }
+.recapitulatif { position: sticky; top: 1rem; background: var(--bleu-clair); border: 1px solid #b9d3ec; border-radius: 12px; padding: 1.25rem; }
+.recapitulatif p { margin: 0.5rem 0; }
+.recapitulatif button { width: 100%; margin-top: 0.75rem; }
+@media (max-width: 800px) { .souscription { grid-template-columns: 1fr; } }
+
+dl.fiche { display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1rem; margin: 0; }
+dl.fiche dt { color: var(--gris); }
+dl.fiche dd { margin: 0; font-weight: 600; }
+
+.filtres { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; margin-bottom: 1rem; }
+.filtres .champ { min-width: 240px; }
+table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--bordure); border-radius: 12px; overflow: hidden; }
+th, td { text-align: left; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--bordure); }
+th { background: #eef2f7; font-size: 0.9rem; color: var(--gris); }
+tbody tr:hover { background: #f8fafc; }
+
+.statut { display: inline-block; border-radius: 999px; padding: 0.15rem 0.7rem; font-weight: 700; font-size: 0.9rem; background: #eef2f7; }
+.statut[data-statut="nouvelle"] { background: #fff4e5; color: #8a4b00; }
+.statut[data-statut="validee"] { background: #e9f6ef; color: var(--vert); }
+.statut[data-statut="installation-planifiee"] { background: var(--bleu-clair); color: var(--bleu); }
+.statut[data-statut="refusee"] { background: #fdecea; color: var(--rouge); }
+
+.colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.formulaire-action { margin-top: 1rem; display: grid; gap: 0.75rem; max-width: 420px; }
+ol.historique { margin: 0; padding-left: 1.25rem; }
+ol.historique li { margin: 0.35rem 0; }
+ol.historique .quand { color: var(--gris); font-size: 0.9rem; }
+
+.visuellement-cache { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

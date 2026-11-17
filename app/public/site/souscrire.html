@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contoso Protect · Souscrire</title>
+  <link rel="stylesheet" href="/commun/style.css">
+</head>
+<body>
+  <header class="bandeau">
+    <a class="marque" href="/">Contoso Protect</a>
+    <nav aria-label="Navigation principale">
+      <a href="/">Nos offres</a>
+      <a href="/crm">Espace conseiller</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Souscrire à la télésurveillance</h1>
+    <div id="resume-erreurs" class="alerte" role="alert" hidden></div>
+
+    <form id="formulaire" class="souscription" novalidate>
+      <div>
+        <fieldset id="champ-offre">
+          <legend>Votre offre</legend>
+          <div id="liste-offres"></div>
+          <p class="erreur" id="erreur-offre" hidden></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Options</legend>
+          <div id="liste-options"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Vos coordonnées</legend>
+          <div class="grille">
+            <div class="champ">
+              <label for="civilite">Civilité</label>
+              <select id="civilite" name="civilite" aria-describedby="erreur-civilite">
+                <option value="">Choisir…</option>
+                <option>Madame</option>
+                <option>Monsieur</option>
+              </select>
+              <p class="erreur" id="erreur-civilite" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="prenom">Prénom</label>
+              <input id="prenom" name="prenom" autocomplete="given-name" aria-describedby="erreur-prenom">
+              <p class="erreur" id="erreur-prenom" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="nom">Nom</label>
+              <input id="nom" name="nom" autocomplete="family-name" aria-describedby="erreur-nom">
+              <p class="erreur" id="erreur-nom" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="email">Adresse e-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" aria-describedby="erreur-email">
+              <p class="erreur" id="erreur-email" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="telephone">Téléphone</label>
+              <input id="telephone" name="telephone" type="tel" autocomplete="tel" aria-describedby="erreur-telephone">
+              <p class="erreur" id="erreur-telephone" hidden></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Adresse d'installation</legend>
+          <div class="grille">
+            <div class="champ">
+              <label for="adresse">Adresse</label>
+              <input id="adresse" name="adresse" autocomplete="street-address" aria-describedby="erreur-adresse">
+              <p class="erreur" id="erreur-adresse" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="codePostal">Code postal</label>
+              <input id="codePostal" name="codePostal" inputmode="numeric" autocomplete="postal-code" aria-describedby="erreur-codePostal">
+              <p class="erreur" id="erreur-codePostal" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="ville">Ville</label>
+              <input id="ville" name="ville" autocomplete="address-level2" aria-describedby="erreur-ville">
+              <p class="erreur" id="erreur-ville" hidden></p>
+            </div>
+          </div>
+          <fieldset id="champ-logement">
+            <legend>Type de logement</legend>
+            <label class="choix"><input type="radio" name="logement" value="maison"> Maison</label>
+            <label class="choix"><input type="radio" name="logement" value="appartement"> Appartement</label>
+            <p class="erreur" id="erreur-logement" hidden></p>
+          </fieldset>
+        </fieldset>
+
+        <fieldset>
+          <legend>Installation</legend>
+          <div class="grille">
+            <div class="champ">
+              <label for="dateInstallation">Date d'installation souhaitée</label>
+              <input id="dateInstallation" name="dateInstallation" type="date" aria-describedby="erreur-dateInstallation">
+              <p class="erreur" id="erreur-dateInstallation" hidden></p>
+            </div>
+            <div class="champ">
+              <label for="codePromo">Code promo (facultatif)</label>
+              <input id="codePromo" name="codePromo" autocomplete="off">
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <aside class="recapitulatif" aria-labelledby="titre-recap">
+        <h2 id="titre-recap">Récapitulatif</h2>
+        <p>Offre : <strong id="recap-offre">—</strong></p>
+        <p>Total mensuel : <strong id="total-mensuel" data-testid="total-mensuel">0,00 €</strong> / mois</p>
+        <p>Frais d'installation : <strong id="frais-installation" data-testid="frais-installation">99,00 €</strong>
+          <span id="frais-offerts" hidden>(offerts avec le code BIENVENUE)</span></p>
+        <label class="choix"><input type="checkbox" id="cgvAcceptees" name="cgvAcceptees" aria-describedby="erreur-cgvAcceptees"> J'accepte les conditions générales de vente</label>
+        <p class="erreur" id="erreur-cgvAcceptees" hidden></p>
+        <button type="submit">Valider ma commande</button>
+      </aside>
+    </form>
+  </main>
+  <footer>Contoso Protect est une entreprise fictive créée pour une démonstration. Toutes les données sont synthétiques.</footer>
+  <script type="module" src="/site/souscrire.mjs"></script>
+</body>
+</html>

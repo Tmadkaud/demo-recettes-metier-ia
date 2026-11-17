@@ -1,0 +1,25 @@
+{
+  "name": "demo-recettes-metier-ia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Démo : recettes métier automatisées avec Playwright et GitHub Copilot sur une application fictive (Contoso Protect).",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node app/serveur.mjs",
+    "demo:regression": "node app/serveur.mjs --anomalie=seuil-superviseur",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:visible": "playwright test --headed --workers=1",
+    "test:unitaires": "node --test tests/unitaires/",
+    "rapport": "playwright show-report",
+    "pv": "node scripts/pv-recette.mjs",
+    "plan-b": "git checkout plan-b -- tests/recettes/REC-004-planification-installation.spec.ts || git checkout origin/plan-b -- tests/recettes/REC-004-planification-installation.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "^24.0.0"
+  }
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contoso Protect · CRM · Connexion</title>
+  <link rel="stylesheet" href="/commun/style.css">
+</head>
+<body>
+  <header class="bandeau crm">
+    <span class="marque">Contoso Protect · CRM</span>
+  </header>
+  <main class="etroit">
+    <h1>Connexion à l'espace conseiller</h1>
+    <div id="erreur-connexion" class="alerte" role="alert" hidden></div>
+    <form id="connexion" class="carte formulaire-action">
+      <div class="champ">
+        <label for="identifiant">Identifiant</label>
+        <input id="identifiant" name="identifiant" autocomplete="username" required>
+      </div>
+      <div class="champ">
+        <label for="motDePasse">Mot de passe</label>
+        <input id="motDePasse" name="motDePasse" type="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit">Se connecter</button>
+    </form>
+    <details class="carte" style="margin-top: 1rem">
+      <summary>Comptes de démonstration</summary>
+      <ul>
+        <li><code>c.martin</code> : Claire Martin, conseillère</li>
+        <li><code>s.benali</code> : Sami Benali, superviseur</li>
+        <li><code>l.roux</code> : Lina Roux, lecture seule (audit)</li>
+      </ul>
+      <p>Mots de passe : voir le README du dépôt.</p>
+    </details>
+  </main>
+  <footer>Contoso Protect est une entreprise fictive créée pour une démonstration. Toutes les données sont synthétiques.</footer>
+  <script type="module" src="/crm/connexion.mjs"></script>
+</body>
+</html>

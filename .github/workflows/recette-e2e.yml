@@ -1,0 +1,59 @@
+name: Recette automatisée
+
+on:
+  push:
+    branches: [main, plan-b]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recette-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  recette:
+    name: Recette Playwright et PV
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Installer Chromium pour Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests unitaires des règles métier
+        run: npm run test:unitaires
+
+      - name: Recette automatisée (Playwright)
+        run: npx playwright test
+        env:
+          # Comptes de test : secrets du dépôt s'ils existent, sinon mots de passe de démonstration.
+          CONTOSO_MDP_CONSEILLER: ${{ secrets.CONTOSO_MDP_CONSEILLER }}
+          CONTOSO_MDP_SUPERVISEUR: ${{ secrets.CONTOSO_MDP_SUPERVISEUR }}
+          CONTOSO_MDP_LECTURE: ${{ secrets.CONTOSO_MDP_LECTURE }}
+
+      - name: PV de recette dans le résumé du job
+        if: ${{ !cancelled() }}
+        run: node scripts/pv-recette.mjs >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publier le rapport Playwright et le PV
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: recette-${{ github.run_number }}
+          path: |
+            playwright-report/
+            rapports/
+            test-results/
+          retention-days: 14

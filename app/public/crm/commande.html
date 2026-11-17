@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contoso Protect · CRM · Commande</title>
+  <link rel="stylesheet" href="/commun/style.css">
+</head>
+<body>
+  <header class="bandeau crm">
+    <span class="marque">Contoso Protect · CRM</span>
+    <div class="utilisateur">
+      <span id="utilisateur" data-testid="utilisateur"></span>
+      <button id="deconnexion" type="button">Se déconnecter</button>
+    </div>
+  </header>
+  <main>
+    <p><a href="/crm/commandes">← Retour aux commandes</a></p>
+    <h1 id="titre">Commande</h1>
+    <p>Statut : <span class="statut" id="statut" data-testid="statut"></span></p>
+    <div id="message" class="info" role="status" hidden></div>
+    <div id="erreur-action" class="alerte" role="alert" hidden></div>
+
+    <div class="colonnes">
+      <section class="carte" aria-labelledby="titre-client">
+        <h2 id="titre-client">Client</h2>
+        <dl class="fiche">
+          <dt>Nom</dt><dd id="client-nom"></dd>
+          <dt>E-mail</dt><dd id="client-email"></dd>
+          <dt>Téléphone</dt><dd id="client-telephone"></dd>
+          <dt>Adresse</dt><dd id="client-adresse"></dd>
+          <dt>Logement</dt><dd id="client-logement"></dd>
+        </dl>
+      </section>
+      <section class="carte" aria-labelledby="titre-offre">
+        <h2 id="titre-offre">Offre et montants</h2>
+        <dl class="fiche">
+          <dt>Offre</dt><dd id="offre"></dd>
+          <dt>Options</dt><dd id="options"></dd>
+          <dt>Total mensuel</dt><dd id="total-mensuel" data-testid="total-mensuel"></dd>
+          <dt>Frais d'installation</dt><dd id="frais-installation"></dd>
+          <dt>Code promo</dt><dd id="code-promo"></dd>
+        </dl>
+      </section>
+      <section class="carte" aria-labelledby="titre-installation">
+        <h2 id="titre-installation">Installation</h2>
+        <dl class="fiche">
+          <dt>Date souhaitée</dt><dd id="date-souhaitee"></dd>
+          <dt>Rendez-vous</dt><dd id="rendez-vous" data-testid="rendez-vous"></dd>
+        </dl>
+      </section>
+    </div>
+
+    <section class="carte" aria-labelledby="titre-actions" id="zone-actions">
+      <h2 id="titre-actions">Actions</h2>
+      <p id="lecture-seule" class="avertissement" hidden>Accès en lecture seule : aucune action n'est possible avec ce profil.</p>
+      <p id="aucune-action" hidden>Aucune action n'est possible sur cette commande.</p>
+
+      <div id="actions-nouvelle" hidden>
+        <div class="actions">
+          <button id="bouton-valider" type="button">Valider la commande</button>
+          <button id="bouton-refuser" type="button" class="secondaire">Refuser la commande</button>
+        </div>
+        <p id="raison-valider" class="avertissement" hidden></p>
+        <form id="form-refus" class="formulaire-action" hidden>
+          <div class="champ">
+            <label for="motif">Motif du refus</label>
+            <textarea id="motif" rows="3" aria-describedby="erreur-motif"></textarea>
+            <p class="erreur" id="erreur-motif" hidden></p>
+          </div>
+          <button type="submit" class="danger">Confirmer le refus</button>
+        </form>
+      </div>
+
+      <form id="form-planifier" class="formulaire-action" hidden aria-labelledby="titre-planifier">
+        <h3 id="titre-planifier">Planifier l'installation</h3>
+        <div class="champ">
+          <label for="date-rdv">Date du rendez-vous</label>
+          <input id="date-rdv" type="date" aria-describedby="erreur-date">
+          <p class="erreur" id="erreur-date" hidden></p>
+        </div>
+        <div class="champ">
+          <label for="creneau">Créneau</label>
+          <select id="creneau" aria-describedby="erreur-creneau">
+            <option value="">Choisir…</option>
+          </select>
+          <p class="erreur" id="erreur-creneau" hidden></p>
+        </div>
+        <button type="submit">Confirmer la planification</button>
+      </form>
+    </section>
+
+    <section class="carte" aria-labelledby="titre-historique" style="margin-top: 1rem">
+      <h2 id="titre-historique">Historique</h2>
+      <ol class="historique" id="historique" aria-labelledby="titre-historique"></ol>
+    </section>
+  </main>
+  <footer>Contoso Protect est une entreprise fictive créée pour une démonstration. Toutes les données sont synthétiques.</footer>
+  <script type="module" src="/crm/commande.mjs"></script>
+</body>
+</html>
