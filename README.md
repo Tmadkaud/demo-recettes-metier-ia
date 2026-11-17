@@ -1,5 +1,7 @@
 # Recettes métier automatisées avec Playwright et GitHub Copilot
 
+[![Recette automatisée](https://github.com/Tmadkaud/demo-recettes-metier-ia/actions/workflows/recette-e2e.yml/badge.svg?branch=main)](https://github.com/Tmadkaud/demo-recettes-metier-ia/actions/workflows/recette-e2e.yml)
+
 Démo : une équipe de recette (AMOA) écrit ses scénarios **en français**, un agent GitHub Copilot les transforme en tests Playwright, la CI les rejoue à chaque changement et publie un **PV de recette** lisible par le métier.
 
 L'application testée, **Contoso Protect**, est fictive : un site public de souscription à la télésurveillance et le CRM des conseillers qui valident les commandes et planifient les installations. Toutes les données sont synthétiques.
