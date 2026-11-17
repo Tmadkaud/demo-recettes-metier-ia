@@ -5,6 +5,7 @@ Public visé : direction technique, équipe de recette (AMOA, recetteurs) et dé
 ## Préparation (la veille, puis 30 minutes avant)
 
 - [ ] `git pull`, `npm ci`, `npx playwright install chromium`, puis `npx playwright test` : tout doit être vert. `npm run pv` pour vérifier le PV.
+- [ ] CI : le badge « Recette automatisée » du README est vert, et le dernier PV est visible dans le résumé du dernier run (onglet **Actions**), à montrer en séquence 7.
 - [ ] `git status` propre et **pas** de fichier `tests/recettes/REC-004-*.spec.ts` : l'agent doit le générer en direct.
 - [ ] GitHub Copilot app : dépôt ajouté comme projet ; **Customize** > **Installed** : le serveur MCP `playwright` du dépôt apparaît ; l'agent **Recetteur** apparaît dans le sélecteur d'agents.
 - [ ] Faire une répétition complète de la séquence 4, puis `git restore . && git clean -fd tests/recettes` pour revenir à l'état initial.
