@@ -36,6 +36,7 @@ jobs:
         run: npm run test:unitaires
 
       - name: Recette automatisée (Playwright)
+        if: ${{ !cancelled() }}
         run: npx playwright test
         env:
           # Comptes de test : secrets du dépôt s'ils existent, sinon mots de passe de démonstration.
@@ -44,7 +45,7 @@ jobs:
           CONTOSO_MDP_LECTURE: ${{ secrets.CONTOSO_MDP_LECTURE }}
 
       - name: PV de recette dans le résumé du job
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && hashFiles('rapports/resultats.json') != '' }}
         run: node scripts/pv-recette.mjs >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publier le rapport Playwright et le PV
