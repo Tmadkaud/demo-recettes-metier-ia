@@ -63,10 +63,10 @@ describe('validerCommande', () => {
 
 describe('actionsPossibles', () => {
   const commande = (statut, totalMensuel) => ({ statut, totalMensuel });
-  it('réserve au superviseur la validation au-delà de 50 € par mois', () => {
-    assert.equal(actionsPossibles('conseiller', commande('nouvelle', 5490)).valider.autorisee, false);
-    assert.equal(actionsPossibles('conseiller', commande('nouvelle', 5000)).valider.autorisee, true);
-    assert.equal(actionsPossibles('superviseur', commande('nouvelle', 5490)).valider.autorisee, true);
+  it('réserve au superviseur la validation au-delà de 60 € par mois', () => {
+    assert.equal(actionsPossibles('conseiller', commande('nouvelle', 6490)).valider.autorisee, false);
+    assert.equal(actionsPossibles('conseiller', commande('nouvelle', 5490)).valider.autorisee, true);
+    assert.equal(actionsPossibles('superviseur', commande('nouvelle', 6490)).valider.autorisee, true);
   });
   it("n'autorise aucune action en lecture seule", () => {
     assert.deepEqual(actionsPossibles('lecture', commande('nouvelle', 2990)), {});
