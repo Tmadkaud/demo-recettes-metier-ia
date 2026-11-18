@@ -9,7 +9,7 @@ L'agent **Recetteur** (`.github/agents/recetteur.agent.md`) lit une fiche, déro
 | [REC-001](REC-001-souscription-et-validation.md) | Souscription en ligne puis validation dans le CRM | ✅ |
 | [REC-002](REC-002-droits-par-profil.md) | Droits par profil sur une commande de plus de 50 € par mois | ✅ |
 | [REC-003](REC-003-controles-du-formulaire.md) | Contrôles du formulaire de souscription | ✅ |
-| [REC-004](REC-004-planification-installation.md) | Planification de l'installation d'une commande validée | ❌ à automatiser |
+| [REC-004](REC-004-planification-installation.md) | Planification de l'installation d'une commande validée | ✅ |
 
 ## Cycle de vie d'une fiche
 

@@ -6,7 +6,7 @@
 | Applications | CRM des conseillers |
 | Profils | Conseiller, Lecture seule |
 | Priorité | Haute : sans rendez-vous, pas d'installation ni de facturation |
-| Automatisée | ❌ à automatiser |
+| Automatisée | ✅ `tests/recettes/REC-004-planification-installation.spec.ts` |
 
 ## Objectif
 
