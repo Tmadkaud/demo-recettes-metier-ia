@@ -12,7 +12,8 @@ export class SiteSouscription {
   constructor(readonly page: Page) {
     this.totalMensuel = page.getByTestId('total-mensuel');
     this.fraisInstallation = page.getByTestId('frais-installation');
-    this.resumeErreurs = page.locator('#resume-erreurs');
+    // Le résumé des erreurs est annoncé aux lecteurs d’écran (rôle alert).
+    this.resumeErreurs = page.getByRole('alert');
   }
 
   async ouvrirLesOffres() {
@@ -80,6 +81,6 @@ export class SiteSouscription {
   }
 
   messageErreur(texte: string): Locator {
-    return this.page.locator('.erreur').filter({ hasText: texte });
+    return this.page.getByText(texte, { exact: true });
   }
 }

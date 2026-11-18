@@ -1,8 +1,9 @@
 // Génère le procès-verbal (PV) de recette en français à partir du rapport JSON de Playwright.
 // Usage : node scripts/pv-recette.mjs [rapports/resultats.json]
 // Écrit rapports/pv-recette.md et affiche le PV (utilisé pour le résumé du job GitHub Actions).
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { lireStatutFiche } from './garde-fous.mjs';
 
 const fichierResultats = process.argv[2] ?? 'rapports/resultats.json';
 const fichierPv = path.join(path.dirname(fichierResultats), 'pv-recette.md');
@@ -69,12 +70,25 @@ const origine = process.env.GITHUB_RUN_ID
   ? `GitHub Actions, [exécution ${process.env.GITHUB_RUN_ID}](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}), commit \`${(process.env.GITHUB_SHA ?? '').slice(0, 7)}\``
   : 'poste local';
 
+// Couverture de la recette : une mesure, pas une cible.
+const fiches = existsSync('recettes')
+  ? readdirSync('recettes')
+      .filter((nom) => /^REC-\d{3}-.+\.md$/.test(nom))
+      .map((nom) => ({ identifiant: nom.slice(0, 7), ...lireStatutFiche(readFileSync(path.join('recettes', nom), 'utf8')) }))
+  : [];
+const automatisees = fiches.filter((f) => f.automatisee);
+const aAutomatiser = fiches.filter((f) => !f.automatisee).map((f) => f.identifiant);
+const couverture = fiches.length
+  ? `${automatisees.length} sur ${fiches.length} (${Math.round((100 * automatisees.length) / fiches.length)} %)${aAutomatiser.length ? `, à automatiser : ${aAutomatiser.join(', ')}` : ''}`
+  : 'non mesurée';
+
 const lignes = [];
 lignes.push('# Procès-verbal de recette automatisée', '');
 lignes.push('| | |', '| --- | --- |');
 lignes.push('| Application | Contoso Protect (démo) : site de souscription et CRM |');
 lignes.push(`| Exécution | ${horodatage} (heure de Paris), durée ${duree(rapport.stats?.duration ?? 0)} |`);
 lignes.push(`| Navigateur | ${navigateurs} |`);
+lignes.push(`| Fiches automatisées | ${couverture} |`);
 lignes.push(`| Origine | ${origine} |`, '');
 
 if (cas.length === 0) {
@@ -119,8 +133,13 @@ for (const scenario of scenarios) {
       const preuves = (enEchec.attachments ?? []).filter((a) => a.path);
       if (preuves.length) {
         const NOMS_PREUVES = { screenshot: "capture d'écran", video: 'vidéo', trace: 'trace', 'error-context': "contexte de l'erreur" };
-        lignes.push(`  Preuves : ${preuves.map((a) => `${NOMS_PREUVES[a.name] ?? a.name} \`${cheminLisible(a.path)}\``).join(', ')}`);
-        if (preuves.some((a) => a.name === 'trace')) lignes.push('  (ouvrir une trace : `npx playwright show-trace <chemin>`)');
+        if (process.env.GITHUB_ACTIONS) {
+          const noms = [...new Set(preuves.map((a) => NOMS_PREUVES[a.name] ?? a.name))].join(', ');
+          lignes.push(`  Preuves : ${noms}, dans le rapport HTML de l’artefact « recette-${process.env.GITHUB_RUN_NUMBER ?? ''} ».`);
+        } else {
+          lignes.push(`  Preuves : ${preuves.map((a) => `${NOMS_PREUVES[a.name] ?? a.name} \`${cheminLisible(a.path)}\``).join(', ')}`);
+          if (preuves.some((a) => a.name === 'trace')) lignes.push('  (ouvrir une trace : `npx playwright show-trace <chemin>`)');
+        }
       }
       lignes.push('');
     }

@@ -1,0 +1,49 @@
+name: Demande de recette
+description: Demander l’automatisation d’une fiche de recette (une fiche = une session = un agent).
+title: "Recette REC-XXX : <titre de la fiche>"
+labels: ["recette"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Une demande = une fiche de recette du dossier `recettes/`, rédigée à partir de `recettes/_modele.md`. Elle est traitée dans une session dédiée par l’agent **Recetteur**, relue par l’agent **Relecteur**, puis mergée par un humain.
+  - type: input
+    id: fiche
+    attributes:
+      label: Fiche de recette
+      description: Chemin de la fiche dans le dépôt.
+      placeholder: recettes/REC-004-planification-installation.md
+    validations:
+      required: true
+  - type: dropdown
+    id: applications
+    attributes:
+      label: Applications concernées
+      multiple: true
+      options:
+        - Site de souscription
+        - CRM des conseillers
+    validations:
+      required: true
+  - type: dropdown
+    id: priorite
+    attributes:
+      label: Priorité
+      options:
+        - Haute (parcours critique)
+        - Moyenne
+        - Basse
+    validations:
+      required: true
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte pour l’agent
+      description: Ce que la fiche ne dit pas encore (profils, données, cas limites, pièges connus).
+  - type: checkboxes
+    id: donnees
+    attributes:
+      label: Données
+      options:
+        - label: Je confirme que la fiche n’utilise que des données fictives et des comptes de test.
+          required: true

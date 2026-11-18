@@ -14,10 +14,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  garde-fous:
+    name: Garde-fous et tests unitaires
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Garde-fous de la recette (messages écrits pour l’agent)
+        run: npm run garde-fous
+
+      - name: Assertions de recette inchangées sans leur fiche
+        if: ${{ github.event_name == 'pull_request' }}
+        run: node scripts/garde-assertions.mjs "origin/${{ github.base_ref }}"
+
+      - name: Tests unitaires et seuils de couverture par module
+        if: ${{ !cancelled() }}
+        run: npm run test:unitaires
+
   recette:
-    name: Recette Playwright et PV
+    name: Recette (lot ${{ matrix.lot }}/2)
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        lot: [1, 2]
     steps:
       - uses: actions/checkout@v7
 
@@ -32,23 +64,88 @@ jobs:
       - name: Installer Chromium pour Playwright
         run: npx playwright install --with-deps chromium
 
-      - name: Tests unitaires des règles métier
-        run: npm run test:unitaires
-
-      - name: Recette automatisée (Playwright)
-        if: ${{ !cancelled() }}
-        run: npx playwright test
+      - name: Recette automatisée, lot ${{ matrix.lot }} sur 2
+        run: npx playwright test --shard=${{ matrix.lot }}/2 --reporter=blob
         env:
-          # Comptes de test : secrets du dépôt s'ils existent, sinon mots de passe de démonstration.
+          # Comptes de test : secrets du dépôt s’ils existent, sinon mots de passe de démonstration.
           CONTOSO_MDP_CONSEILLER: ${{ secrets.CONTOSO_MDP_CONSEILLER }}
           CONTOSO_MDP_SUPERVISEUR: ${{ secrets.CONTOSO_MDP_SUPERVISEUR }}
           CONTOSO_MDP_LECTURE: ${{ secrets.CONTOSO_MDP_LECTURE }}
 
+      - name: Conserver le rapport du lot
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: blob-lot-${{ matrix.lot }}
+          path: blob-report/
+          retention-days: 1
+
+  pv:
+    name: PV de recette
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [recette]
+    if: ${{ !cancelled() }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Récupérer les rapports des lots
+        uses: actions/download-artifact@v8
+        with:
+          pattern: blob-lot-*
+          path: blob-reports
+          merge-multiple: true
+
+      - name: Fusionner les rapports (HTML et JSON)
+        run: npx playwright merge-reports --reporter=html,json blob-reports
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: ${{ github.workspace }}/rapports/resultats.json
+
       - name: PV de recette dans le résumé du job
-        if: ${{ !cancelled() && hashFiles('rapports/resultats.json') != '' }}
         run: node scripts/pv-recette.mjs >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Publier le rapport Playwright et le PV
+      - name: L’agent enquêteur rejoue les échecs sur la référence
+        id: enquete
+        if: ${{ needs.recette.result == 'failure' && github.event_name == 'pull_request' }}
+        run: |
+          npx playwright install --with-deps chromium
+          npm run enquete -- --base "origin/${{ github.base_ref }}"
+          cat rapports/enquete.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Résumé du PV dans la pull request
+        if: ${{ github.event_name == 'pull_request' && !cancelled() }}
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const marqueur = '<!-- pv-recette -->';
+            const pv = fs.readFileSync('rapports/pv-recette.md', 'utf8');
+            const verdict = pv.split('\n').find((l) => l.startsWith('## Verdict')) ?? '## Verdict : inconnu';
+            const synthese = pv.split('## Synthèse par scénario')[1]?.split('## Détail des cas')[0]?.trim() ?? '';
+            const enquete = fs.existsSync('rapports/enquete.md') ? fs.readFileSync('rapports/enquete.md', 'utf8').replace(/^# .*\n/, '### Enquête automatique : la preuve d’abord\n') : '';
+            const lien = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const corps = [marqueur, '## PV de recette', verdict.replace('## ', '**') + '**', '', synthese, '', enquete,
+              `PV complet et preuves : [exécution ${context.runId}](${lien}). La CI vérifie la forme ; un humain vérifie le sens et merge.`].join('\n');
+            const { data: commentaires } = await github.rest.issues.listComments({ ...context.repo, issue_number: context.issue.number, per_page: 100 });
+            const existant = commentaires.find((c) => c.body?.includes(marqueur));
+            if (existant) await github.rest.issues.updateComment({ ...context.repo, comment_id: existant.id, body: corps });
+            else await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body: corps });
+
+      - name: Publier le rapport Playwright, le PV et l’enquête
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
@@ -56,5 +153,10 @@ jobs:
           path: |
             playwright-report/
             rapports/
-            test-results/
           retention-days: 14
+
+      - name: Le PV fait foi
+        if: ${{ needs.recette.result != 'success' }}
+        run: |
+          echo "::error title=Recette non conforme::Voir le PV de recette dans le résumé du job."
+          exit 1

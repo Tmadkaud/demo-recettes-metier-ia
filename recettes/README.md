@@ -13,10 +13,13 @@ L'agent **Recetteur** (`.github/agents/recetteur.agent.md`) lit une fiche, déro
 
 ## Cycle de vie d'une fiche
 
-1. L'AMOA rédige la fiche à partir du [modèle](_modele.md) et la dépose dans ce dossier (pull request).
-2. Le Recetteur génère le test, l'exécute et signale toute anomalie au lieu de la masquer.
-3. Un développeur et l'AMOA relisent la pull request (fiche + test).
-4. La CI rejoue toute la recette à chaque modification et publie le PV : la fiche devient un test de non-régression.
+1. L'AMOA rédige la fiche à partir du [modèle](_modele.md) et ouvre une issue « Demande de recette » qui la désigne.
+2. Une session dédiée par fiche : l'agent **Recetteur** explore le parcours, écrit le test, l'exécute jusqu'au vert, passe les garde-fous et ouvre une pull request **en brouillon** avec ses preuves.
+3. L'agent **Relecteur**, dans une autre session et en lecture seule, confronte le test à la fiche. Chaque écart repasse par un test rouge, une correction, un vert.
+4. La CI rejoue toute la recette en lots parallèles, publie le PV dans la PR et, si un test échoue, rejoue l'échec sur `main` pour prouver si la PR est en cause.
+5. Un humain relit les preuves et merge : la fiche devient un test de non-régression.
+
+La fiche fait foi ([ADR 0001](../docs/adr/0001-la-fiche-fait-foi.md)) : une vérification ne change jamais sans sa fiche, et le garde-fou `assertion-affaiblie` bloque la PR sinon.
 
 ## Demander l'automatisation d'une fiche
 

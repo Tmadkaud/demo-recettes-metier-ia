@@ -46,6 +46,23 @@ Oui : en plus du PV et du rapport HTML, Playwright produit du JSON et du JUnit X
 **Et les données sensibles ?**
 Les captures, vidéos et traces montrent les écrans : utilisez un environnement de recette avec des données fictives ou anonymisées, et limitez la durée de conservation des rapports (14 jours dans la CI de ce dépôt).
 
+## Agents et confiance
+
+**Qu'est-ce qui empêche un agent de faire passer un test en l'affaiblissant ?**
+Trois verrous. Les règles toujours chargées ([AGENTS.md](../AGENTS.md), [ADR 0004](../docs/adr/0004-une-anomalie-ne-se-masque-jamais.md)) l'interdisent. Les garde-fous de la CI le détectent : délai allongé, cas sauté sans raison, et surtout toute vérification retirée ou modifiée sans mise à jour de sa fiche (`npm run garde-assertions`), ce qui bloque la PR. Enfin, un autre agent relit en lecture seule et un humain merge.
+
+**Un test échoue sur une PR : est-ce la faute de la PR ?**
+On le prouve avant de toucher à quoi que ce soit : `npm run enquete` rejoue les tests en échec sur la référence (`main`), même configuration, même navigateur. S'ils échouent aussi, la PR est innocente et la référence se répare à part ; s'ils passent, la PR introduit la régression. En CI, l'enquête se lance d'elle-même et son verdict s'affiche dans la PR.
+
+**Qu'est-ce qu'AGENTS.md ?**
+Un fichier Markdown, à la racine du dépôt, que les agents GitHub Copilot lisent comme instructions ([documentation GitHub](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)). On y écrit les règles, les commandes, le processus et le journal des incidents devenus règles. C'est la mémoire de l'agent : écrivez-le avant le premier prompt.
+
+**Plusieurs agents peuvent-ils travailler en même temps ?**
+Oui : une fiche, une session, un agent. Dans le GitHub Copilot app, chaque session travaille dans sa propre copie de travail ; plusieurs fiches avancent en parallèle sans se gêner, et la CI vérifie chaque PR.
+
+**Qui décide de la mise en recette ou en production ?**
+Un humain. Les règles de la branche `main` ([docs/regles-main.json](../docs/regles-main.json)) imposent une PR et des vérifications vertes ; un agent ne merge jamais. La CI vérifie la forme, l'humain vérifie le sens.
+
 ## Démarrer
 
 **Par où commencer ?**

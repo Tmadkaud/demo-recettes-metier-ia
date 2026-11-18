@@ -1,0 +1,41 @@
+name: Anomalie de recette
+description: Signaler un écart entre une fiche de recette et le comportement de l’application, preuves à l’appui.
+title: "Anomalie REC-XXX : <résumé>"
+labels: ["anomalie"]
+body:
+  - type: input
+    id: fiche
+    attributes:
+      label: Fiche et cas concernés
+      placeholder: REC-002 · le conseiller ne peut pas valider
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Résultat attendu (selon la fiche)
+    validations:
+      required: true
+  - type: textarea
+    id: obtenu
+    attributes:
+      label: Résultat obtenu
+    validations:
+      required: true
+  - type: dropdown
+    id: enquete
+    attributes:
+      label: Verdict de l’enquête (npm run enquete)
+      options:
+        - La PR introduit la régression (le test passe sur la référence)
+        - La référence est déjà cassée (le test échoue aussi sur la référence)
+        - Pas d’enquête (anomalie constatée hors PR)
+    validations:
+      required: true
+  - type: textarea
+    id: preuves
+    attributes:
+      label: Preuves
+      description: Extrait du PV, lien vers l’exécution de la CI, capture d’écran ou trace Playwright.
+    validations:
+      required: true

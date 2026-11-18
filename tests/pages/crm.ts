@@ -21,7 +21,7 @@ export class Crm {
     this.rendezVous = page.getByTestId('rendez-vous');
     this.historique = page.getByRole('list', { name: 'Historique' });
     this.message = page.getByRole('status');
-    this.erreur = page.locator('#erreur-action');
+    this.erreur = page.getByRole('alert');
     this.boutonValider = page.getByRole('button', { name: 'Valider la commande' });
     this.boutonRefuser = page.getByRole('button', { name: 'Refuser la commande' });
     this.formulairePlanification = page.getByRole('form', { name: "Planifier l'installation" });
