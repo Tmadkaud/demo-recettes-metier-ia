@@ -32,7 +32,7 @@ export const FRAIS_INSTALLATION = 9900;
 export const CODE_PROMO_FRAIS_OFFERTS = 'BIENVENUE';
 
 // Au-delà de ce total mensuel, seul un superviseur peut valider la commande.
-export const SEUIL_VALIDATION_SUPERVISEUR = 5000;
+export const SEUIL_VALIDATION_SUPERVISEUR = 6000;
 export const DELAI_MINIMUM_INSTALLATION_JOURS = 3;
 
 export const STATUTS = {
